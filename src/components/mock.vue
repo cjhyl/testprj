@@ -14,11 +14,19 @@ export default {
   },
   created () {
     console.log('this',this);
+    this.getdata2()
     this.getdata()
   },
   methods: {
     getdata: function() {
       api.mockdata('/data/index')
+      .then(res => {
+        console.log(res);
+        this.dataShow = res.data;
+      })
+    },
+    getdata2: function() {
+      this.$http.post('/data/index')
       .then(res => {
         console.log(res);
         this.dataShow = res.data;

@@ -1,5 +1,6 @@
 <template>
-    <el-container v-loading.fullscreen="loading" class="childPage" :style="{'height':(contentHeight-40)+'px'}">
+	<!--:style="{'height':(contentHeight-40)+'px'}"-->
+    <el-container v-loading.fullscreen="loading" class="childPage" >
 		<!--<el-dialog title="添加" :visible.sync="addDlgVisible">
 			<el-form :model="addData">
 				<template v-for="(r,idx) in dataMap" :key="idx">

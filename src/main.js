@@ -11,6 +11,11 @@ import ElementUI from 'element-ui'
 import './css/main.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import mmUtils from './utils'
+var cnchar = require('cnchar');
+var poly = require('cnchar-poly');
+var order = require('cnchar-order');
+var trad = require('cnchar-trad');
+cnchar.use(poly, order, trad);
 
 
 //阻止 vue 在启动时生成生产提示
@@ -19,6 +24,8 @@ Vue.config.productionTip = false;
 Vue.use(vueAxios, axios);
 //使用elementUI
 Vue.use(ElementUI);
+//使用vue-wechat-title
+Vue.use(require('vue-wechat-title'))
 
 //引入mock
 require("./mock");
@@ -33,7 +40,7 @@ new Vue({
   template: '<App/>',
   data: {
 		resizeTimer: null,
-		hubConnection: null,
+		hubConnection: null
 	},
 	computed: {
 		lan:function(){

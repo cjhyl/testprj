@@ -1,6 +1,8 @@
 <template>
-  <div>
-  </div>
+  <el-container class="childPage" >
+		<el-main>
+		</el-main>
+	</el-container>
 </template>
  
 <script>

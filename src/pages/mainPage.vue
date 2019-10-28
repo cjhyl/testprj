@@ -1,68 +1,38 @@
 <template>
     <el-container v-loading.fullscreen="initLoading">
-		<el-header class="mmHeader" height="50px" >
-			<div class="lBg">
-				<div class="rc">
-					<img class="logo" src="../../static/images/logo.png" />
-				</div>
-				<!--<div class="rc">
-					<el-select v-model="selM1" placeholder="请选择">
-						<el-option
-							v-for="(r,idx) in m1"
-							:key="idx"
-							:label="r.name"
-							:value="r.id"
-							>
-						</el-option>
-					</el-select>
-				</div>
-				<div class="rc">
-					<el-select v-model="selM2" placeholder="请选择">
-						<el-option
-							v-for="(r,idx) in m2"
-							:key="idx"
-							:label="r.name"
-							:value="r.id"
-							>
-						</el-option>
-					</el-select>
-				</div>-->
+		<el-aside :width="isCollapse?'64px':'220px'" class="leftMenu">
+			<div class="logoBg">
+				<span class="logoName" v-show="!isCollapse" v-text="logoName"></span>
 			</div>
-			<div class="rBg">
-				<el-select v-model="selLan" @change="lanChange" placeholder="请选择">
-					<el-option
-						v-for="(r,idx) in languages"
-						:key="idx"
-						:label="r.label"
-						:value="r.val"
-						>
-					</el-option>
-				</el-select>
-				<el-select v-model="selRole" placeholder="请选择">
-					<el-option
-						v-for="(r,idx) in roles"
-						:key="idx"
-						:label="r.label"
-						:value="r.value"
-						>
-					</el-option>
-				</el-select>
-			</div>
-		</el-header>
+			<el-scrollbar>
+				<data-menu 
+				:mycollapse="isCollapse"
+				:datas="menuTree"
+				:sel="selMenu"
+				@myselect="handleSelect">
+				</data-menu>
+			</el-scrollbar>
+		</el-aside>
 		<el-container>
-			<el-aside :width="isCollapse?'65px':'201px'" :style="{'height':contentHeight+'px'}" class="leftMenu">
-				<el-scrollbar>
-					<div class="collapseBg">
-						<i :class="{'el-icon-s-fold':!isCollapse,'el-icon-s-unfold':isCollapse}" @click="handleCollapse"></i>
-					</div>
-					<data-menu 
-					:mycollapse="isCollapse"
-					:datas="menuTree"
-					:sel="selMenu"
-					@myselect="handleSelect">
-					</data-menu>
-				</el-scrollbar>
-			</el-aside>
+			<el-header class="mmHeader" height="60px" >
+				<div class="collapseBg">
+					<i :class="{'el-icon-s-fold':!isCollapse,'el-icon-s-unfold':isCollapse}" @click="handleCollapse"></i>
+				</div>
+				<div class="userBox">
+					<el-dropdown @command="systemSettings">
+						<div>
+							<img src="../../static/images/touxiang.svg" alt class="userImg" />
+
+							<span v-text="userName"></span>
+						</div>
+						<el-dropdown-menu slot="dropdown">
+							<el-dropdown-item command="修改密码">修改密码</el-dropdown-item>
+							<el-dropdown-item command="logout">退出登录</el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
+				</div>
+			</el-header>
+			
 			<el-main >
 				<router-view></router-view>
 			</el-main>
@@ -81,7 +51,9 @@ export default {
   },
   data () {
     return {
-      isCollapse:true,
+		userName:'用户名',
+		logoName:'Brand',
+    	isCollapse:false,
 //				{key:'orderId',keyName:'排序优先级',canEdit:true},
 //				{key:'parentId',keyName:'父节点ID',canEdit:true},
 //				{key:'title',keyName:'标题',canEdit:true},
@@ -90,33 +62,27 @@ export default {
 //				{key:'icon',keyName:'图标',canEdit:true},
 //				{key:'createdTime',keyName:'创建时间',canEdit:false},
 //				{key:'id',keyName:'ID',canEdit:false}
-			menuMap:{
-				'1':'menu',
-				'2':'permission',
-				'6BA1B9E47508CCE6':'role',
-				'09A27FAB4840BB30':'user',
-				'0BA8AB1013593657':'test1',
-				'3C67E0DC97760D33':'app',
-				'4CB5F3E5298E9331':'app_role',
-				'A156AF0B9344D7B0':'app_action',
-				'ECC1AE4EEB782190':'app_module',
-			},
-			selLan:'zh-CN',
-			roles:[
-				{label:'admin',value:'1'},
-				{label:'guest',value:'2'}
-			],
-			selRole:'1',
-			
-			loading:false,
-			
-			initMenu:false,
-			initPermission:false,
-			initRole:false,
-			initApiUserStatus:false,
-			initAppRoleStatus:false,
-			initAppRole:false,
-			initAppAction:false,
+		menuMap:{
+			'1':'brand',
+			'2':'menu',
+			'3':'permission',
+		},
+		selLan:'cn',
+		roles:[
+			{label:'admin',value:'1'},
+			{label:'guest',value:'2'}
+		],
+		selRole:'1',
+		
+		loading:false,
+		
+		initMenu:false,
+		initPermission:false,
+		initRole:false,
+		initApiUserStatus:false,
+		initAppRoleStatus:false,
+		initAppRole:false,
+		initAppAction:false,
     }
   },
   computed:{
@@ -145,7 +111,6 @@ export default {
     }
   },
   mounted:function(){
-	this.$root.resizeWindow();
 	this.handleSelect(this.selMenu);
 	if(typeof this.lan=='string'){
 		this.selLan=this.lan;
@@ -157,6 +122,16 @@ export default {
   beforeDestroy:function(){
   },
   methods:{
+	systemSettings(command) {
+		let that = this;
+		if (command == "logout") {
+			//this.logout();
+		} else if (command == "systemSettings") {
+			//that.$refs.home.isHideSystemSettings = false;
+		} else if (command == "修改密码") {
+			//that.$refs.home.isHideChangePassword = false;
+		}
+	},
   	lanChange:function(){
 		console.log('lanChange',arguments,this.selLan);
 		this.$store.commit({
@@ -300,6 +275,7 @@ export default {
 		handleCollapse:function(){
 			console.log('this',this);
 			this.isCollapse=!this.isCollapse;
+			
 		},
 		handleSelect:function(key,keyPath){
 			this.$store.commit({

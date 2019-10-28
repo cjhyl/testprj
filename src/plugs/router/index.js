@@ -5,13 +5,14 @@ import mock from '@/components/mock'
 import login from '@/pages/login'
 import mainPage from '@/pages/mainPage'
 import mainDefault from '@/pages/mainDefault'
+import brandPage from '@/pages/brandPage'
 import menuPage from '@/pages/menuPage'
 import permissionPage from '@/pages/permissionPage'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [{
+  routes: [/*{
     path: '/HelloWorld',
     name: 'HelloWorld',
     component: HelloWorld
@@ -19,7 +20,7 @@ export default new Router({
     path: '/mock',
     name: 'mock',
     component: mock
-  },{
+  },*/{
     path: '/',
     name: 'default0',
     component: login
@@ -35,6 +36,10 @@ export default new Router({
       path: '/main',
       name: 'default',
       component: mainDefault
+    }, {
+      path: 'brand',
+      name: 'brand',
+      component: brandPage
     }, {
       path: 'menu',
       name: 'menu',
